@@ -5,9 +5,9 @@ void Renderer::init()
 	Scene initials;
 	initials._width = 512;
 	initials._height = 512;
-	initials._objects.emplace_back(new Pic(128, 256, Pixel{ 0, 0, 255, 255 }, 482.0f / 2, "letterG.png", Pixel{ 0, 0, 255, 255 }));
-	initials._objects.emplace_back(new Pic(256, 256, Pixel{ 0, 0, 255, 255 }, 256.0f / 2, "letterA.png", Pixel{ 0, 0, 255, 255 }));
-	initials._objects.emplace_back(new Pic(384, 256, Pixel{ 0, 0, 255, 255 }, 380.0f / 2, "letterN.png", Pixel{ 0, 0, 255, 255 }));
+	initials._objects.emplace_back(new Pic(128, 256, Pixel{ 0, 0, 255, 255 }, 482.0f / 2, "../inputs/letterG.png", Pixel{ 0, 0, 255, 255 }));
+	initials._objects.emplace_back(new Pic(256, 256, Pixel{ 0, 0, 255, 255 }, 256.0f / 2, "../inputs/letterA.png", Pixel{ 0, 0, 255, 255 }));
+	initials._objects.emplace_back(new Pic(384, 256, Pixel{ 0, 0, 255, 255 }, 380.0f / 2, "../inputs/letterN.png", Pixel{ 0, 0, 255, 255 }));
 
 	_scenes.push_back(std::move(initials));
 
@@ -20,14 +20,14 @@ void Renderer::init()
 	big._objects.emplace_back(new Circle(512, 512, Pixel{ 255, 0, 0, 255 }, 256.0f));
 	big._objects.emplace_back(new Rectangle(1536, 512, Pixel{ 127, 0, 127, 255 }, 128.0f, true));
 	big._objects.emplace_back(new Triangle(1024, 1024, Pixel{ 0, 255, 0, 255 }, 256.0f));
-	big._objects.emplace_back(new Pic(1024, 512, Pixel{ 0, 0, 255, 255 }, 512.0f, "flame.png", Pixel{ 0, 204, 255, 255 }, true));
+	big._objects.emplace_back(new Pic(1024, 512, Pixel{ 0, 0, 255, 255 }, 512.0f, "../inputs/flame.png", Pixel{ 0, 204, 255, 255 }, true));
 
 	_scenes.push_back(std::move(big));
 
 	Scene small;
 	small._width = 128;
 	small._height = 128;
-	small._objects.emplace_back(new Pic(64, 64, Pixel{ 0, 0, 255, 255 }, 64.0f, "flame.png", Pixel{ 0, 0, 255, 255 }));
+	small._objects.emplace_back(new Pic(64, 64, Pixel{ 0, 0, 255, 255 }, 64.0f, "../inputs/flame.png", Pixel{ 0, 0, 255, 255 }));
 
 	_scenes.push_back(std::move(small));
 
@@ -178,7 +178,7 @@ void Renderer::run_scene(const Scene& _scene, int index)
 	}
 
 	std::ostringstream filePathStream;
-	filePathStream << "scene" << index << ".bmp";
+	filePathStream << "../scene" << index << ".bmp";
 	saveResult(filePathStream.str(), result);
 }
 

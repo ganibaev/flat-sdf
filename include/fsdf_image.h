@@ -28,12 +28,10 @@ struct Pixel
 		case 2:
 			return b;
 			break;
-		case 3:
-			return a;
-			break;
 		default:
 			break;
 		}
+		return a;
 	}
 };
 
