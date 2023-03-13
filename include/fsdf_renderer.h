@@ -22,7 +22,7 @@ public:
 
 	void init();
 	void run();
-	void sample_pixels(size_t start, int num_workers, const Scene& _scene, Image* result, int sceneIndex);
+	void sample_pixels(size_t start, int num_workers, const Scene& _scene, Image& result, int sceneIndex);
 	void run_scene(const Scene& _scene, int index);
 
 	void saveResult(std::string filePath, Image& result);

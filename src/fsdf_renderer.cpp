@@ -37,16 +37,25 @@ void Renderer::run()
 {
 	for (size_t i = 0; i < _scenes.size(); ++i)
 	{
+		// Benchmark start
+		std::chrono::time_point<std::chrono::system_clock> start, end;
+		start = std::chrono::system_clock::now();
+
 		run_scene(_scenes[i], i);
+
+		// Benchmark end
+		end = std::chrono::system_clock::now();
+		std::chrono::duration<double, std::milli> elapsed_time = end - start;
+		std::cout << "Rendering scene " << i << " took " << elapsed_time.count() << " milliseconds." << std::endl;
 	}
 }
 
-void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene, Image* result, int sceneIndex)
+void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene, Image& result, int sceneIndex)
 {
-	for (size_t ind = start; ind < result->_height * result->_width; ind += num_workers)
+	for (size_t ind = start; ind < result._height * static_cast<size_t>(result._width); ind += num_workers)
 	{
-		size_t x = ind % result->_width;
-		size_t y = ind / result->_width;
+		int x = ind % result._width;
+		int y = ind / result._width;
 		float min_sdf = 1.00f;
 		int min_ind = -1;
 		for (size_t i = 0; i < _scene._objects.size(); ++i)
@@ -128,7 +137,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 					endColor.g = 0;
 					endColor.b = 0;
 					endColor.a = _scene._objects[i]->_color.a;
-					result->setPixel(x, y, endColor);
+					result.setPixel(x, y, endColor);
 				}
 				else
 				{
@@ -144,7 +153,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 					endColor.g = (1 - sdf) * pointColor.g + sdf * endColor.g;
 					endColor.b = (1 - sdf) * pointColor.b + sdf * endColor.b;
 					endColor.a = pointColor.a;
-					result->setPixel(x, y, endColor);
+					result.setPixel(x, y, endColor);
 				}
 			}
 		}
@@ -155,12 +164,19 @@ void Renderer::run_scene(const Scene& _scene, int index)
 {
 	Image result;
 	result.setExtent(_scene._width, _scene._height);
-	int num_threads = std::thread::hardware_concurrency();
+	const int num_threads = std::thread::hardware_concurrency();
 	std::vector<std::thread> workers;
+	workers.reserve(num_threads);
 
 	for (size_t id = 0; id < num_threads; ++id) {
-		workers.emplace_back(&Renderer::sample_pixels, this, id, num_threads, _scene, &result, index);
+		workers.emplace_back(&Renderer::sample_pixels, this, id, num_threads, std::cref(_scene), std::ref(result), index);
 	}
+
+	for (auto& thread : workers)
+	{
+		thread.join();
+	}
+
 	std::ostringstream filePathStream;
 	filePathStream << "scene" << index << ".bmp";
 	saveResult(filePathStream.str(), result);
