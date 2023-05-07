@@ -74,7 +74,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 			{
 			case 'c':
 			{
-				Circle* circ = dynamic_cast<Circle*>(_scene._objects[i].get());
+				Circle* circ = static_cast<Circle*>(_scene._objects[i].get());
 				sdf11 = static_cast<float>(circ->getSDF(x1, y1)) / 255.0f;
 				sdf12 = static_cast<float>(circ->getSDF(x1, y2)) / 255.0f;
 				sdf21 = static_cast<float>(circ->getSDF(x2, y1)) / 255.0f;
@@ -84,7 +84,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 			}
 			case 'r':
 			{
-				Rectangle* rect = dynamic_cast<Rectangle*>(_scene._objects[i].get());
+				Rectangle* rect = static_cast<Rectangle*>(_scene._objects[i].get());
 				sdf11 = static_cast<float>(rect->getSDF(x1, y1)) / 255.0f;
 				sdf12 = static_cast<float>(rect->getSDF(x1, y2)) / 255.0f;
 				sdf21 = static_cast<float>(rect->getSDF(x2, y1)) / 255.0f;
@@ -94,7 +94,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 			}
 			case 't':
 			{
-				Triangle* triangle = dynamic_cast<Triangle*>(_scene._objects[i].get());
+				Triangle* triangle = static_cast<Triangle*>(_scene._objects[i].get());
 				sdf11 = static_cast<float>(triangle->getSDF(x1, y1)) / 255.0f;
 				sdf12 = static_cast<float>(triangle->getSDF(x1, y2)) / 255.0f;
 				sdf21 = static_cast<float>(triangle->getSDF(x2, y1)) / 255.0f;
@@ -104,7 +104,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 			}
 			case 'l':
 			{
-				Line* line = dynamic_cast<Line*>(_scene._objects[i].get());
+				Line* line = static_cast<Line*>(_scene._objects[i].get());
 				sdf11 = static_cast<float>(line->getSDF(x1, y1)) / 255.0f;
 				sdf12 = static_cast<float>(line->getSDF(x1, y2)) / 255.0f;
 				sdf21 = static_cast<float>(line->getSDF(x2, y1)) / 255.0f;
@@ -114,7 +114,7 @@ void Renderer::sample_pixels(size_t start, int num_workers, const Scene& _scene,
 			}
 			case 'p':
 			{
-				Pic* pic = dynamic_cast<Pic*>(_scene._objects[i].get());
+				Pic* pic = static_cast<Pic*>(_scene._objects[i].get());
 				secondColor = pic->_topColor;
 				sdf11 = static_cast<float>(pic->getSDF(x1, y1)) / 255.0f;
 				sdf12 = static_cast<float>(pic->getSDF(x1, y2)) / 255.0f;
